@@ -31,29 +31,51 @@ def init_dashboard(server):
     def sync_todoist_data():
         """Sync data from Todoist to database"""
         try:
+            logging.info("Starting Todoist data sync...")
+
             # Fetch and store projects
             todoist_projects = todoist_client.get_projects()
+            logging.info(f"Retrieved {len(todoist_projects)} projects from Todoist")
+
             for proj_data in todoist_projects:
-                project = Project.query.filter_by(todoist_id=proj_data['id']).first()
-                if not project:
-                    project = Project(
-                        todoist_id=proj_data['id'],
-                        name=proj_data['name']
-                    )
-                    db.session.add(project)
+                try:
+                    project = Project.query.filter_by(todoist_id=proj_data['id']).first()
+                    if not project:
+                        project = Project(
+                            todoist_id=proj_data['id'],
+                            name=proj_data['name']
+                        )
+                        db.session.add(project)
+                        logging.info(f"Added new project: {proj_data['name']}")
+                except Exception as e:
+                    logging.error(f"Error processing project {proj_data.get('name', 'Unknown')}: {str(e)}")
+                    continue
+
             db.session.commit()
+            logging.info("Projects sync completed")
 
             # Fetch and store tasks
             tasks = todoist_client.get_completed_tasks()
+            logging.info(f"Retrieved {len(tasks)} completed tasks from Todoist")
+
             for task_data in tasks:
-                task = Task.query.filter_by(todoist_id=task_data['id']).first()
-                if not task:
-                    project = Project.query.filter_by(todoist_id=task_data['project_id']).first()
-                    task = Task.create_from_todoist(task_data, project.id if project else None)
-                    db.session.add(task)
+                try:
+                    task = Task.query.filter_by(todoist_id=task_data['id']).first()
+                    if not task:
+                        project = Project.query.filter_by(todoist_id=task_data.get('project_id')).first()
+                        task = Task.create_from_todoist(task_data, project.id if project else None)
+                        db.session.add(task)
+                        logging.info(f"Added new task: {task_data['content'][:50]}...")
+                except Exception as e:
+                    logging.error(f"Error processing task {task_data.get('content', 'Unknown')}: {str(e)}")
+                    continue
+
             db.session.commit()
+            logging.info("Tasks sync completed successfully")
+
         except Exception as e:
-            logging.error(f"Error syncing data: {str(e)}")
+            logging.error(f"Error in sync process: {str(e)}")
+            db.session.rollback()
 
     # Layout
     app.layout = dbc.Container([
