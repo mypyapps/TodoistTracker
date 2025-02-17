@@ -1,0 +1,37 @@
+/* Additional custom styles */
+.dash-table-container {
+    margin-top: 20px;
+}
+
+.dash-dropdown {
+    margin-bottom: 15px;
+}
+
+.dash-graph {
+    background-color: transparent !important;
+}
+
+/* Dark theme adjustments */
+[data-bs-theme=dark] {
+    --bs-body-bg: #1a1a1a;
+    --bs-body-color: #e9ecef;
+}
+
+/* Loading spinner styles */
+._dash-loading-callback {
+    font-family: sans-serif;
+    padding-top: 50px;
+    color: var(--bs-primary);
+}
+
+/* Table styles */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--bs-body-color);
+}
+
+/* Card styles */
+.card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
