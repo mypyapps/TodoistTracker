@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 import plotly.express as px
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 
 from todoist_client import TodoistClient
@@ -151,13 +151,21 @@ def init_dashboard(server):
         [Input('sync-interval', 'n_intervals')]
     )
     def update_dropdowns(n):
-        weeks = db.session.query(Task.week).distinct().order_by(Task.week).all()
-        week_options = [{'label': week[0], 'value': week[0]} for week in weeks]
+        # Generate last 3 weeks
+        current_date = datetime.now()
+        weeks = []
+        for i in range(3):
+            date = current_date - timedelta(weeks=i)
+            week_str = date.strftime('%Y-W%W')
+            weeks.append(week_str)
 
+        week_options = [{'label': week, 'value': week} for week in weeks]
+
+        # Get projects for dropdown
         projects = Project.query.all()
         project_options = [{'label': p.name, 'value': p.id} for p in projects]
 
-        return week_options, weeks[-1][0] if weeks else None, project_options, None
+        return week_options, weeks[0], project_options, None
 
     @app.callback(
         [Output('tasks-graph', 'figure'),
