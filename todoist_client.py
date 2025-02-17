@@ -44,7 +44,23 @@ class TodoistClient:
         if not tasks:
             return pd.DataFrame()
 
-        df = pd.DataFrame(tasks)
-        df['completed_date'] = pd.to_datetime(df['completed_date'])
-        df['week'] = df['completed_date'].dt.strftime('%Y-W%W')
-        return df
+        processed_tasks = []
+        for task in tasks:
+            try:
+                # Ensure completed_date exists and is in the correct format
+                if 'completed_date' not in task:
+                    logging.warning(f"Task {task.get('content', 'Unknown')} missing completed_date")
+                    continue
+
+                completed_date = pd.to_datetime(task['completed_date'])
+                task['completed_date'] = completed_date
+                task['week'] = completed_date.strftime('%Y-W%W')
+                processed_tasks.append(task)
+            except Exception as e:
+                logging.error(f"Error processing task {task.get('content', 'Unknown')}: {str(e)}")
+                continue
+
+        if not processed_tasks:
+            return pd.DataFrame()
+
+        return pd.DataFrame(processed_tasks)
