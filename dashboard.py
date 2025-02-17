@@ -80,7 +80,7 @@ def init_dashboard(server):
     # Layout
     app.layout = dbc.Container([
         dcc.Interval(
-            id='sync-interval',
+            id='interval-component',
             interval=CACHE_TIMEOUT * 1000,  # Convert to milliseconds
             n_intervals=0
         ),
@@ -135,8 +135,8 @@ def init_dashboard(server):
     ], fluid=True)
 
     @app.callback(
-        Output('sync-interval', 'disabled'),
-        Input('sync-interval', 'n_intervals')
+        Output('interval-component', 'disabled'),
+        Input('interval-component', 'n_intervals')
     )
     def sync_data(n):
         if n is not None:
@@ -148,7 +148,7 @@ def init_dashboard(server):
          Output('week-dropdown', 'value'),
          Output('project-dropdown', 'options'),
          Output('project-dropdown', 'value')],
-        [Input('sync-interval', 'n_intervals')]
+        [Input('interval-component', 'n_intervals')]
     )
     def update_dropdowns(n):
         # Generate last 3 weeks
