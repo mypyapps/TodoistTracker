@@ -7,6 +7,15 @@
     margin-bottom: 15px;
 }
 
+/* Style dropdown text color */
+.Select-value-label {
+    color: #000000 !important;
+}
+
+.VirtualizedSelectOption {
+    color: #000000 !important;
+}
+
 .dash-graph {
     background-color: transparent !important;
 }
