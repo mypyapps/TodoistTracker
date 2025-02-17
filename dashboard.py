@@ -159,13 +159,15 @@ def init_dashboard(server):
             week_str = date.strftime('%Y-W%W')
             weeks.append(week_str)
 
-        week_options = [{'label': week, 'value': week} for week in weeks]
+        # Add "All" option to weeks
+        week_options = [{'label': 'All Weeks', 'value': 'all'}] + [{'label': week, 'value': week} for week in weeks]
 
         # Get projects for dropdown
         projects = Project.query.all()
-        project_options = [{'label': p.name, 'value': p.id} for p in projects]
+        # Add "All" option to projects
+        project_options = [{'label': 'All Projects', 'value': 'all'}] + [{'label': p.name, 'value': p.id} for p in projects]
 
-        return week_options, weeks[0], project_options, None
+        return week_options, 'all', project_options, 'all'
 
     @app.callback(
         [Output('tasks-graph', 'figure'),
@@ -176,9 +178,9 @@ def init_dashboard(server):
     def update_dashboard(selected_week, selected_project):
         query = Task.query
 
-        if selected_week:
+        if selected_week and selected_week != 'all':
             query = query.filter(Task.week == selected_week)
-        if selected_project:
+        if selected_project and selected_project != 'all':
             query = query.filter(Task.project_id == selected_project)
 
         tasks = query.all()
