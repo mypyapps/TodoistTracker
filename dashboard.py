@@ -36,7 +36,9 @@ def init_dashboard(server):
             # Fetch and store projects
             todoist_projects = todoist_client.get_projects()
             logging.info(f"Retrieved {len(todoist_projects)} projects from Todoist")
-
+            for pr in todoist_projects:
+                print(f"Project--> {pr['name']}")  #mw
+            
             for proj_data in todoist_projects:
                 try:
                     project = Project.query.filter_by(todoist_id=proj_data['id']).first()
@@ -57,7 +59,10 @@ def init_dashboard(server):
             # Fetch and store tasks
             tasks = todoist_client.get_completed_tasks()
             logging.info(f"Retrieved {len(tasks)} completed tasks from Todoist")
-
+            for ts in tasks:
+                #print(f"Task--> {ts['content']}")  #mw
+                print(f"Task--> {ts}")  #mw
+                
             for task_data in tasks:
                 try:
                     task = Task.query.filter_by(todoist_id=task_data['id']).first()
