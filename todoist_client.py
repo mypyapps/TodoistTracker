@@ -48,11 +48,11 @@ class TodoistClient:
         for task in tasks:
             try:
                 # Ensure completed_date exists and is in the correct format
-                if 'completed_date' not in task:
-                    logging.warning(f"Task {task.get('content', 'Unknown')} missing completed_date")
+                if 'completed_at' not in task:
+                    logging.warning(f"Task {task.get('content', 'Unknown')} missing completed_at")
                     continue
 
-                completed_date = pd.to_datetime(task['completed_date'])
+                completed_date = pd.to_datetime(task['completed_at'])
                 task['completed_date'] = completed_date
                 task['week'] = completed_date.strftime('%Y-W%W')
                 processed_tasks.append(task)
