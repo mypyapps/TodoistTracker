@@ -60,7 +60,7 @@ def init_dashboard(server):
             tasks = todoist_client.get_completed_tasks()
             logging.info(f"Retrieved {len(tasks)} completed tasks from Todoist")
             for ts in tasks:
-                #print(f"Task--> {ts['content']}")  #mw
+                #print(f"Task--> {ts['content']}")  #mw 
                 print(f"Task--> {ts}")  #mw
                 
             for task_data in tasks:

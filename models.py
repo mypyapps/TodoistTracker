@@ -17,7 +17,7 @@ class Task(db.Model):
 
     @classmethod
     def create_from_todoist(cls, task_data, project_id=None):
-        completed_date = datetime.fromisoformat(task_data['completed_at'])
+        completed_date = datetime.fromisoformat(task_data['completed_at']) #fixed
         week = completed_date.strftime('%Y-W%W')
 
         return cls(

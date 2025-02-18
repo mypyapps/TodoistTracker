@@ -52,7 +52,7 @@ class TodoistClient:
                     logging.warning(f"Task {task.get('content', 'Unknown')} missing completed_at")
                     continue
 
-                completed_date = pd.to_datetime(task['completed_at'])
+                completed_date = pd.to_datetime(task['completed_at']) #fixed
                 task['completed_date'] = completed_date
                 task['week'] = completed_date.strftime('%Y-W%W')
                 processed_tasks.append(task)
