@@ -3,7 +3,7 @@ from typing import Dict, List
 import pandas as pd
 
 def get_week_ranges(df: pd.DataFrame) -> List[str]:
-    """Get list of week ranges from DataFrame"""
+    """Get list of week ranges from DataFrame """
     if df.empty:
         return []
     weeks = df['week'].unique()

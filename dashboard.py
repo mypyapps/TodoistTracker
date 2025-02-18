@@ -193,7 +193,7 @@ def init_dashboard(server):
             'project_name': task.project.name if task.project else 'No Project'
         } for task in tasks])
 
-        # Create graph
+        # Create graph 
         if not df.empty:
             fig = px.bar(
                 df.groupby('week').size().reset_index(),

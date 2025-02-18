@@ -27,3 +27,4 @@ class Task(db.Model):
             completed_date=completed_date,
             week=week
         )
+        

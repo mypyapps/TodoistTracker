@@ -42,7 +42,7 @@ class TodoistClient:
     def process_completed_tasks(self, tasks: List[Dict]) -> pd.DataFrame:
         """Process completed tasks into a pandas DataFrame"""
         if not tasks:
-            return pd.DataFrame()
+            return pd.DataFrame()            
 
         processed_tasks = []
         for task in tasks:

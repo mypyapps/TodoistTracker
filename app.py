@@ -26,7 +26,7 @@ with app.app_context():
     import models  # noqa: F401
     db.create_all()
 
-# import and register the dashboard
+# import and register the dashboard 
 from dashboard import init_dashboard
 app = init_dashboard(app)
 
